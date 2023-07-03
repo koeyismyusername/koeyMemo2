@@ -62,6 +62,7 @@ function displayMemo(memo) {
   // 삭제 버튼
   const btnDelete = document.createElement("button");
   btnDelete.textContent = "삭제";
+  btnDelete.addEventListener("click", deleteMemo);
   li.appendChild(btnDelete);
 
   ul.appendChild(li);
@@ -82,5 +83,13 @@ async function editMemo(event) {
     body: JSON.stringify(memo),
   });
 
+  window.location.reload();
+}
+
+async function deleteMemo(event) {
+  const memoID = event.target.parentElement.dataset.id;
+  await fetch(`/memos/${memoID}`, {
+    method: "DELETE",
+  });
   window.location.reload();
 }
