@@ -7,7 +7,7 @@ app = FastAPI()
 memos = []
 
 class Memo(BaseModel):
-  insertAt: str
+  id: str
   content: str
 
 @app.post("/memos")
@@ -17,5 +17,14 @@ def createMemo(memo: Memo):
 @app.get("/memos")
 def readMemos():
   return memos
+
+@app.put("/memos/{memo_id}")
+def editMemo(newMemo: Memo, memo_id: str):
+  for memo in memos:
+    if memo.id == memo_id:
+      memo.content = newMemo.content
+      return "200"
+  
+  return "그런 메모는 존재하지 않습니다."
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
